@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Stock.Server;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,6 +13,9 @@ namespace Stock.Console
         static ServiceProvider serviceProvider;
         static async Task Main(string[] args)
         {
+
+           
+
             serviceProvider = new ServiceCollection()
                .AddLogging()
                .AddSingleton<IPriceSourceReader, PriceJsonSourceReader>()
@@ -27,25 +31,48 @@ namespace Stock.Console
             _ = serviceProvider.
                     GetServices<IPriceSourceReader>()
                     .FirstOrDefault(s => s.SourceType == PriceSourceType.JsonFile)
-                .ReadSource(@"C:\Users\tfadida\Source\Repos\AccessFintech\Stock.Console\stocks.json");
+                .ReadSource(@"stocks.json");
 
             _ = serviceProvider.
-                    GetServices<IPriceSourceReader>()
-                    .FirstOrDefault(s => s.SourceType == PriceSourceType.JsonWebSource)
-                .ReadSource(@"https://s3.amazonaws.com/test-data-samples/stocks.json");
+                             GetServices<IPriceSourceReader>()
+                             .FirstOrDefault(s => s.SourceType == PriceSourceType.JsonWebSource)
+                         .ReadSource(@"http://localhost:14573/api/pricelist");
 
-                      
-            System.Console.WriteLine("processing...");           
+            //Test against dummy api 
+            /*
+            _ = Task.Run(async () =>
+              {
+                  while (true)
+                  {
+                      _ = serviceProvider.
+                              GetServices<IPriceSourceReader>()
+                              .FirstOrDefault(s => s.SourceType == PriceSourceType.JsonWebSource)
+                          .ReadSource(@"http://localhost:14573/api/pricelist");
+                      await Task.Delay(1000);
+                  }
+              });
+            */
 
-            //test
+            System.Console.WriteLine("processing...");
+           
+
+            ////test
             for (int i = 0; i < 5; i++)
             {
                 TestPrice("AAWW");
-                await Task.Delay(2000);
+                await Task.Delay(200);
             }
-            
-            System.Console.ReadKey();
+
+            var priceMeter = serviceProvider.GetService<IPriceEngine>();
+            var all = priceMeter.GetAllLowest();
+            foreach (var p in all.Take(10))
+            {
+                System.Console.WriteLine($"{p.Name} = {p.Price}");
+            }
+
+            //System.Console.ReadKey();
         }
+ 
 
         private static void TestPrice(string name)
         {

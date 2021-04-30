@@ -15,4 +15,10 @@
     <ProjectReference Include="..\Stock.Server\Stock.Server.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="stocks.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

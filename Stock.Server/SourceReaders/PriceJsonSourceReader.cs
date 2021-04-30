@@ -41,7 +41,7 @@ namespace Stock.Server
 
                     await Task.Run(async () =>
                     {
-                        Console.WriteLine("**** PriceJsonSourceReader scan started *** ");
+                        //Console.WriteLine("**** PriceJsonSourceReader scan started *** ");
                         using (StreamReader reader = File.OpenText(source))
                         {
                             JArray arrayOfStock = (JArray)JToken.ReadFrom(new JsonTextReader(reader));
@@ -55,7 +55,7 @@ namespace Stock.Server
                         }
                         safeGuradOnFileSource.TryRemove(source, out bool _); //enable next scan on same file
                     });
-                    Console.WriteLine("**** PriceJsonSourceReader scan done *** ");
+                    //Console.WriteLine("**** PriceJsonSourceReader scan done *** ");
                 }
             }
             catch (Exception ex)

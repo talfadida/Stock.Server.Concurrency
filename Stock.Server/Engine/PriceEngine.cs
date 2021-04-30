@@ -93,21 +93,8 @@ namespace Stock.Server
         }
 
         public IEnumerable<Stock> GetAllLowest() 
-        {
-            //option 1 - return direct list. Not sure             
-            //return LowestPrice.Values;
-
-            //option2 - should we need to returm immutable stocks of current state
-            List<Stock> result = new List<Stock>();
-
-            _lowestPriceHash.Values.Select(stock =>
-            {
-                result.Add(new Stock(stock));
-                return true;
-            });
-            return result;
-
-           
+        {                 
+            return _lowestPriceHash.Values;            
         }
 
         public void Dispose()
