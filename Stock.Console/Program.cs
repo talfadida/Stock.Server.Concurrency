@@ -36,9 +36,8 @@ namespace Stock.Console
             _ = serviceProvider.
                              GetServices<IPriceSourceReader>()
                              .FirstOrDefault(s => s.SourceType == PriceSourceType.JsonWebSource)
-                         .ReadSource(@"http://localhost:14573/api/pricelist");
-
-            //Test against dummy api 
+                         .ReadSource(@"https://s3.amazonaws.com/test-data-samples/stocks.json");
+            #region Test against dummy api 
             /*
             _ = Task.Run(async () =>
               {
@@ -52,14 +51,14 @@ namespace Stock.Console
                   }
               });
             */
-
+            #endregion
+          
             System.Console.WriteLine("processing...");
            
-
             ////test
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 10; i++)
             {
-                TestPrice("AAWW");
+                TestPrice("CLRO");
                 await Task.Delay(200);
             }
 

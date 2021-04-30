@@ -24,7 +24,7 @@ namespace Stock.Server
             //this is not best practice! HttpClient instance should be created as singelton per source url 
             try
             {
-                //System.Console.WriteLine("**** PriceUrlSourceReader scan started *** ");
+                System.Console.WriteLine("**** PriceUrlSourceReader scan started *** ");
 
                 using (var httpClient = new HttpClient())
                 {
@@ -39,7 +39,7 @@ namespace Stock.Server
                         await _repo.AddStock(token.ToObject<Stock>());
                        // await Task.Delay(10); // for testing purpose
                     }
-                    //System.Console.WriteLine("**** PriceUrlSourceReader scan done *** ");
+                    System.Console.WriteLine("**** PriceUrlSourceReader scan done *** ");
 
                 }
             }
